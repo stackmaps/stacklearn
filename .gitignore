@@ -5,6 +5,7 @@ staticfiles
 .env
 
 # artifacts
+#requirements.txt#
 .gitignore~
 *.html~
 *.py~
