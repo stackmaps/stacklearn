@@ -1,0 +1,19 @@
+oenv
+data
+*.pyc
+staticfiles
+.env
+
+# artifacts
+.gitignore~
+*.html~
+*.py~
+
+# db stuff
+*.sql*
+
+# flake8
+setup.cfg
+setup.cfg~
+flake8output.txt
+
