@@ -13,9 +13,13 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls import include
 from django.contrib import admin
 from django.urls import path
+from mathstack import views as mathstack_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('math/div/', mathstack_views.BoolAnswerCreateView.as_view(), name='bool_answer_create'),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]

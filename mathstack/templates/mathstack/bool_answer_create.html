@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block title %}DATA TEST PAGE{% endblock %}
+
+{% block content %}
+
+<h1>Math Test Page</h1>
+
+<div>
+  {{ question.question }}
+</div>  
+<div>
+  Is {{ operand1 }} divisible by {{ operand1 }}?
+</div> 
+
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Save" />
+</form>
+
+
+{% endblock %}

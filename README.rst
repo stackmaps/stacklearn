@@ -11,17 +11,19 @@ Fork and clone the repo
 
 Fork the project on GitHub and git clone your fork, e.g.:
 
-SSH
+SSH::
 
     git clone <username>@github.com:<username>/stacklearn-clone.git
     
-HTTPS
+HTTPS::
 
     git clone https://github.com/<username>/stacklearn-clone.git
 
 
 Start a `virtualenv`
 ~~~~~~~~~~~~~~~~~~~~
+
+Replace `/path/to/python3` with the appropriate filepath::
 
     $ cd stacklearn-clone
     $ virtualenv -p /path/to/python3 oenv
@@ -57,4 +59,4 @@ Run the server::
 
 View the data models from any browser::
 
-    http://127.0.0.1:8000/admin/
+..    http://127.0.0.1:8000/admin/
