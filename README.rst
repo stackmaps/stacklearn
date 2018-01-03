@@ -23,19 +23,19 @@ HTTPS
 Start a `virtualenv`
 ~~~~~~~~~~~~~~~~~~~~
 
-	$ cd stacklearn-clone
+    $ cd stacklearn-clone
     $ virtualenv -p /path/to/python3 oenv
     $ . oenv/bin/activate
 
 Install dependencies
 ~~~~~~~~~~~~~~~~~~~~
 
-The project dependencies listed in requirements.txt can be installed with pip:
+The project dependencies listed in requirements.txt can be installed with pip::
 
-	(oenv) $ pip install --upgrade pip
+    (oenv) $ pip install --upgrade pip
     (oenv) $ pip install -r requirements.txt
 
-Set environment variables for testing
+Set environment variables for testing::
 
     $ export DJANGO_DEBUG=1
     $ export DJANGO_ENABLE_SSL=0
@@ -43,18 +43,18 @@ Set environment variables for testing
 Setup the database and run locally
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Run migrations:
+Run migrations::
 
-	(oenv) $ python manage.py migrate
+    (oenv) $ python manage.py migrate
 
-Create a Django admin user:
+Create a Django admin user::
 
     (oenv) $ python manage.py createsuperuser
 
-Run the server:
+Run the server::
 
     (oenv) $ python manage.py runserver
 
-View the data models from any browser:
+View the data models from any browser::
 
-	http://127.0.0.1:8000/admin/
+    http://127.0.0.1:8000/admin/
