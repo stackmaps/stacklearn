@@ -15,8 +15,8 @@ Including another URLconf
 """
 from django.urls import path
 from django.conf.urls import url
-from . import views
+from programming import views as programming_views
 
 urlpatterns = [
-    path('game/', views.ProgrammingGame, name='programming game')
+    path('game/', programming_views.ProgrammingHome.asview(), name='programming game')
 ]

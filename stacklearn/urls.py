@@ -23,5 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('math/div/', mathstack_views.BoolAnswerCreateView.as_view(), name='bool_answer_create'),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('programming/', include('programming.urls'))
+# the line below is commented out because some if the files it depends on are not yet complete. (specifically programming/views.py which programming/urls.py relies on which this relies on)
+#    path('programming/', include('programming.urls'))
 ]
