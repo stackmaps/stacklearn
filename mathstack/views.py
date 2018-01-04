@@ -6,6 +6,7 @@ from django.views import generic
 from mathstack.helpers import (
     compute_answer, get_divisor, get_next_q, parse_question
     )
+from api import models as api_models
 from mathstack import models as mathstack_models
 import random
 
@@ -32,7 +33,7 @@ class BoolAnswerCreateView(StudentOnlyMixin, generic.CreateView):
         print("THE KEYS ARE:")
         print(context_data.keys())
         # retrieve the question from `ActiveQuestion` object
-        active_q = mathstack_models.ActiveQuestion.objects.filter(
+        active_q = api_models.ActiveQuestion.objects.filter(
             student=self.request.user).first()
         q_text = active_q.q_text  # fails if no object found
         q_dict = parse_question(q_text)

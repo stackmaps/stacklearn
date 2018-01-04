@@ -1,47 +1,14 @@
-"""  /mathstack/models.py
-    Data models for the mathstack app.
-"""
-
 from django.conf import settings
 from django.db import models
 from django.dispatch import receiver
 from django.urls import reverse
 from mathstack.helpers import compute_answer, get_next_q
-
-import uuid
-
-
-class Student(models.Model):
-    """ A `Student` user can practice math skills.
-    """
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE)
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-
-    def __str__(self):
-        return "{} (student)".format(self.user.username) 
-
-
-class ActiveQuestion(models.Model):
-    """ A `User` may have up to one `ActiveQuestion` object at a time.
-    The `ActiveQuestion` will be deleted when an answer is submitted.
-    """
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    q_text = models.CharField(max_length=50)  # post-processed by compute_answer()
-
-    class Meta:
-        unique_together = ("student", "q_text")
-
-    def __str__(self):
-        return "question for {} re: ".format(
-            self.student.username, self.q_text)
-
+from api import models as api_models
 
 class BooleanAnswer(models.Model):
     """ A `BooleanAnswer` is a `Student`-created response to a YES/NO question.
     """
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    student = models.ForeignKey(api_models.Student, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     raw_answer = models.BooleanField()
     right_answer = models.BooleanField()
@@ -51,7 +18,7 @@ class BooleanAnswer(models.Model):
     def save(self, *args, **kwargs):
         print("LOGGING AN ANSWER OBJECT....")
         # retrieve the current `ActiveQuestion` for this `Student`
-        active_q = ActiveQuestion.objects.filter(student=self.student).first()
+        active_q = api_models.ActiveQuestion.objects.filter(student=self.student).first()
         q_text = active_q.q_text
         answer = compute_answer(q_text)
         if type(answer) is bool:
@@ -71,7 +38,7 @@ class BooleanAnswer(models.Model):
 class IntegerAnswer(models.Model):
     """ An `IntegerAnswer` is a `Student`-created response to a question.
     """
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    student = models.ForeignKey(api_models.Student, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     raw_answer = models.IntegerField()
     right_answer = models.IntegerField()
@@ -80,7 +47,6 @@ class IntegerAnswer(models.Model):
 
     def __str__(self):
         return "{} selected {}".format(self.student.username, self.raw_answer) 
-
 
 @receiver(models.signals.post_save, sender=BooleanAnswer)
 def update_active_question(sender, instance, created, **kwargs):
