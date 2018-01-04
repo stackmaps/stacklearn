@@ -1,7 +1,4 @@
-"""  /mathstack/models.py
-    Data models for the mathstack app.
-"""
-
+from api import models as api_models
 from django.conf import settings
 from django.contrib.auth.signals import user_logged_in
 from django.db import models
@@ -42,7 +39,7 @@ class ActiveQuestion(models.Model):
 class BooleanAnswer(models.Model):
     """ A `BooleanAnswer` is a `Student`-created response to a YES/NO question.
     """
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    student = models.ForeignKey(api_models.Student, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     raw_answer = models.BooleanField()
     right_answer = models.BooleanField()
@@ -52,7 +49,7 @@ class BooleanAnswer(models.Model):
     def save(self, *args, **kwargs):
         print("LOGGING AN ANSWER OBJECT....")
         # retrieve the current `ActiveQuestion` for this `Student`
-        active_q = ActiveQuestion.objects.filter(student=self.student).first()
+        active_q = api_models.ActiveQuestion.objects.filter(student=self.student).first()
         q_text = active_q.q_text
         answer = compute_answer(q_text)
         if type(answer) is bool:
@@ -72,7 +69,7 @@ class BooleanAnswer(models.Model):
 class IntegerAnswer(models.Model):
     """ An `IntegerAnswer` is a `Student`-created response to a question.
     """
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    student = models.ForeignKey(api_models.Student, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     raw_answer = models.IntegerField()
     right_answer = models.IntegerField()
@@ -81,7 +78,6 @@ class IntegerAnswer(models.Model):
 
     def __str__(self):
         return "{} selected {}".format(self.student.username, self.raw_answer) 
-
 
 @receiver(user_logged_in)
 def populate_active_question(sender, user, request, **kwargs):
