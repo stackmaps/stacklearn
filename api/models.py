@@ -28,5 +28,5 @@ class ActiveQuestion(models.Model):
         unique_together = ("student", "q_text")
 
     def __str__(self):
-        return "question for {} re: ".format(
-            self.student.username, self.q_text)
+        return "question for {} re: {}".format(
+            self.student, self.q_text)
