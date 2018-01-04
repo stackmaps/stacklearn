@@ -3,6 +3,7 @@
 """
 
 from django.conf import settings
+from django.contrib.auth.signals import user_logged_in
 from django.db import models
 from django.dispatch import receiver
 from django.urls import reverse
@@ -34,8 +35,8 @@ class ActiveQuestion(models.Model):
         unique_together = ("student", "q_text")
 
     def __str__(self):
-        return "question for {} re: ".format(
-            self.student.username, self.q_text)
+        return "question for {} re: {}".format(
+            self.student, self.q_text)
 
 
 class BooleanAnswer(models.Model):
@@ -65,7 +66,7 @@ class BooleanAnswer(models.Model):
         super(BooleanAnswer, self).save(*args, **kwargs)
 
     def __str__(self):
-        return "{} selected {}".format(self.student.username, self.raw_answer) 
+        return "{} selected {}".format(self.student, self.raw_answer) 
 
 
 class IntegerAnswer(models.Model):
@@ -82,10 +83,20 @@ class IntegerAnswer(models.Model):
         return "{} selected {}".format(self.student.username, self.raw_answer) 
 
 
+@receiver(user_logged_in)
+def populate_active_question(sender, user, request, **kwargs):
+    # check for an existing `ActiveQuestion`
+    q = ActiveQuestion.objects.filter(student__pk=request.user.student.pk).first()
+    if not q:
+        q = ActiveQuestion.objects.create(
+            student_id=request.user.student.pk, q_text=get_next_q())
+    else:
+        q.q_text=get_next_q()
+        q.save()
+
 @receiver(models.signals.post_save, sender=BooleanAnswer)
 def update_active_question(sender, instance, created, **kwargs):
     if created:
-        print("NOW UPDATING THE ACTIVE QUESTION....")
-        active_q = ActiveQuestion.objects.filter(student=self.student).first()
+        active_q = ActiveQuestion.objects.filter(student=instance.student).first()
         active_q.q_text = get_next_q()
         active_q.save()
