@@ -6,6 +6,7 @@ staticfiles
 
 # artifacts
 .gitignore~
+\#requirements.txt#
 *.html~
 *.py~
 
