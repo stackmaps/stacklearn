@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'bootstrap4',
     'rest_framework',
     'api',
-    'mathstack'
+    'mathstack',
+    'programming'
 ]
 
 MIDDLEWARE = [
