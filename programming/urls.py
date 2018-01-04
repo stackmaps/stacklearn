@@ -18,8 +18,7 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('game/', views.game, name='programming game')
+    path('game/', views.ProgrammingGame, name='programming game')
 ]
 
 # Use include() to add paths from the catalog application
