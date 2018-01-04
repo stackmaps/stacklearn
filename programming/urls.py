@@ -20,6 +20,3 @@ from . import views
 urlpatterns = [
     path('game/', views.ProgrammingGame, name='programming game')
 ]
-
-# Use include() to add paths from the catalog application
-ings.STATIC_ROOT)
