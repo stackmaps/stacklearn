@@ -12,6 +12,16 @@ class UserViewSet(viewsets.ModelViewSet):
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
 
+	# overwrite the get_object method so that `@me` returns the currently
+	# logged in user.
+	def get_object(self):
+		pk = self.kwargs.get('pk')
+
+		if pk == "@me":
+			return self.request.user
+
+		return super(UserViewSet, self).get_object()
+
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 
