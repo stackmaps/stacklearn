@@ -19,6 +19,7 @@ from django.urls import path
 from mathstack import views as mathstack_views
 
 urlpatterns = [
+    path('api/', include('api.urls')),
     path('admin/', admin.site.urls),
     path('math/div/', mathstack_views.BoolAnswerCreateView.as_view(), name='bool_answer_create'),
     path('accounts/', include('django.contrib.auth.urls')),
