@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'api',
     'mathstack',
     'userstats'
+    'programming'
 ]
 
 MIDDLEWARE = [

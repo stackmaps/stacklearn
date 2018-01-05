@@ -3,7 +3,9 @@ from django.contrib.auth.models import User
 from django.urls import path
 from rest_framework import routers, serializers, viewsets
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+from programming.urls import GameSolutionViewSet
+
+class UserSerializer(serializers.ModelSerializer):
 	class Meta:
 			model = User
 			fields = ('url', 'username', 'email', 'is_staff')
@@ -23,8 +25,7 @@ class UserViewSet(viewsets.ModelViewSet):
 		return super(UserViewSet, self).get_object()
 
 router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
+router.register('users', UserViewSet)
+router.register('programming/solutions', GameSolutionViewSet)
 
-urlpatterns = [
-	path('', include(router.urls))
-]
+urlpatterns = router.urls
