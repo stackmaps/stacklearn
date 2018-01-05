@@ -1,6 +1,7 @@
 from api import models as api_models
 from django.conf import settings
 from django.contrib.auth.signals import user_logged_in
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.dispatch import receiver
 from django.urls import reverse
@@ -71,7 +72,7 @@ def populate_active_question(sender, user, request, **kwargs):
     # check for an existing `ActiveQuestion`
     try:
         q = api_models.ActiveQuestion.objects.filter(student=user.student).first()
-    except RelatedObjectDoesNotExist:
+    except ObjectDoesNotExist:
         # this is like an admin user, so we will do nothing
         is_student = False
     if is_student:
