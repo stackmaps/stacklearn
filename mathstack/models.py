@@ -69,13 +69,18 @@ class IntegerAnswer(models.Model):
 def populate_active_question(sender, user, request, **kwargs):
     next_q = get_next_q()
     # check for an existing `ActiveQuestion`
-    q = api_models.ActiveQuestion.objects.filter(student=user.student).first()
-    if not q:
-        q = api_models.ActiveQuestion.objects.create(
-            student=user.student, q_text=next_q)
-    else:
-        q.q_text=next_q
-        q.save()
+    try:
+        q = api_models.ActiveQuestion.objects.filter(student=user.student).first()
+    except RelatedObjectDoesNotExist:
+        # this is like an admin user, so we will do nothing
+        is_student = False
+    if is_student:
+        if not q:
+            q = api_models.ActiveQuestion.objects.create(
+                student=user.student, q_text=next_q)
+        else:
+            q.q_text=next_q
+            q.save()
 
 @receiver(models.signals.post_save, sender=BooleanAnswer)
 def update_active_question(sender, instance, created, **kwargs):
