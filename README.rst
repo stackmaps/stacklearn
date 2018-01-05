@@ -14,7 +14,7 @@ Fork the project on GitHub and git clone your fork, e.g.:
 SSH::
 
     git clone <username>@github.com:<username>/stacklearn-clone.git
-    
+
 HTTPS::
 
     git clone https://github.com/<username>/stacklearn-clone.git
@@ -75,19 +75,52 @@ Keep your commit history clean and merge process simple by following these steps
 
 Once time only, add this repo as a remote to your fork, e.g.::
 
+SSH::
     git remote add upstream git@github.com:stackmaps/stacklearn.git
 
-Anytime a PR is merged or changes are pushed, you should run::
+HTTPS::
+    git remote add upstream https://github.com/stackmaps/stacklearn.git
+
+Anytime a PR is merged or changes are pushed (or you're starting this process for the first time), you should run::
 
     git checkout dev
     git pull upstream dev
 
 in order to make sure you are working with an up-to-date copy of the `dev` branch.
 
-Once you have the most recent `dev` code, create a new branch (off of `dev`) for your new feature.  Pick an issue (or create a new one) which your new feature will address.
+Once you have the most recent `dev` code, create a new branch (off of `dev`) for your new feature.
+
+    git checkout -b my-feature
+
+Now you can run `git branch` and should see an output like this:
+
+    $ git branch
+      dev
+      master
+    * my-feature
+
+
+Pick an issue (or create a new one) which your new feature will address.
 
 Proceed with writing code.  Commit frequently!  Focus on writing very clear, concise commit statements and plentiful comments.  If you have poor comments or zero tests, your PR will not be merged.
 
-When your branch is ready (e.g., has comments and tests), submit a Pull Request! 
+If you are aware of changes in the branch you forked from, rebase your branch from that changing branch (in our case that is `dev`) By running:
+
+    git rebase dev
+
+Then resolve all merge conflicts and update dependencies like this:
+
+    pip install -r requirements
+    python manage.py migrate
+    python manage.py test
+
+Then push all your local changes to your own fork. You should run:
+
+    git push --set-upstream origin my-feature
+
+When your branch is ready (e.g., has comments and tests), submit a Pull Request! To do this, go to GitHub, navigate to your fork (in this case the github extension should be /your-username/stacklearn),
+then click `new pull request`. Then change the base to `dev` and the compare to `my-feature.` Finally, click `Create pull request`
+
+
 
 IMPORTANT: WHEN YOUR PR IS ACCEPTED, stop using your branch right away (or delete it altogether).  New features (or enhanced versions of your existing feature) should be created on brand new branches (after pulling in all the fresh changes from `dev`).
