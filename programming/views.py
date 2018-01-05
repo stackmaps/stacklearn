@@ -1,10 +1,12 @@
 from django.shortcuts import render
+from django.views import generic
 from programming.helpers import (get_new_puzzle)
-# Create your views here.
+from programming import models as programming_models 
+
 class GameSolutionCreateView(generic.CreateView):
     """ Class Based View to Handle Game to Database"""
 
-    model = GameSolution
+    model = programming_models.GameSolution
     fields = ["solution_string"]
     template_name = "game_solution_template.html"
 

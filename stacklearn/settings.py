@@ -43,8 +43,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'api',
     'mathstack',
-    'userstats'
-    'programming'
+    'userstats',
+    'programming',
 ]
 
 MIDDLEWARE = [

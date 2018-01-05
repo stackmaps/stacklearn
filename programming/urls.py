@@ -16,6 +16,7 @@ Including another URLconf
 from django.urls import path
 from django.conf.urls import url
 from programming import views as programming_views
+from rest_framework import serializers, permissions, viewsets
 from .models import GameSolution
 
 class GameSolutionSerializer(serializers.ModelSerializer):
@@ -23,7 +24,9 @@ class GameSolutionSerializer(serializers.ModelSerializer):
         model = GameSolution
         fields = '__all__'
 
+
 class GameSolutionViewSet(viewsets.ModelViewSet):
+    queryset = GameSolution.objects.all()  # TODO: get help with this...
     serializer_class = GameSolutionSerializer
     permission_classes = (permissions.IsAuthenticated)
 
@@ -32,5 +35,5 @@ class GameSolutionViewSet(viewsets.ModelViewSet):
 
 
 urlpatterns = [
-    path('game/', programming_views.GameSolutionCreateView.asview(), name='programming game')
+    path('game/', programming_views.GameSolutionCreateView.as_view(), name='programming game')
 ]
