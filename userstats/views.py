@@ -38,7 +38,7 @@ class UserStatsCreateView(generic.CreateView):
                 incorrect_ints += 1
         context_data["correct_ints"] = correct_ints
         context_data["incorrect_ints"] = incorrect_ints
-        context_data["percentage"] = (correct_ints / (NUM_TO_EVALUATE)) * 100
+        context_data["percentage"] = (correct_ints / (correct_ints+incorrect_ints)) * 100
         context_data["progress"] = context_data["percentage"] * 1.11111111111
         
 
