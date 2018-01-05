@@ -1,14 +1,9 @@
 """ /mathstack/views.py
 """
 from braces.views import LoginRequiredMixin
-from django.shortcuts import render, reverse
+from django.shortcuts import reverse, Http404
 from django.views import generic
-from mathstack.helpers import (
-    compute_answer, get_divisor, get_next_q, parse_question
-    )
-from api import models as api_models
 from mathstack import models as mathstack_models
-import random
 
 
 class StudentOnlyMixin(LoginRequiredMixin):
@@ -30,12 +25,10 @@ class BoolAnswerCreateView(StudentOnlyMixin, generic.CreateView):
     def get_context_data(self, **kwargs):
         context_data = super(BoolAnswerCreateView, self).get_context_data(**kwargs)
         # retrieve the question from `ActiveQuestion` object
-        active_q = api_models.ActiveQuestion.objects.filter(
+        active_q = mathstack_models.ActiveQuestion.objects.filter(
             student=self.request.user.student).first()
-        q_text = active_q.q_text  # fails if no object found
-        q_dict = parse_question(q_text)
-        context_data["operand1"] = q_dict["operand1"]
-        context_data["divisor"] = q_dict["divisor"]
+        context_data["operand1"] = active_q.question.operand1
+        context_data["divisor"] = active_q.question.operand2
         return context_data
 
     def form_valid(self, form):
