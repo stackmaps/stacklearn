@@ -31,7 +31,7 @@ class BoolAnswerCreateView(StudentOnlyMixin, generic.CreateView):
         context_data = super(BoolAnswerCreateView, self).get_context_data(**kwargs)
         # retrieve the question from `ActiveQuestion` object
         active_q = api_models.ActiveQuestion.objects.filter(
-            student=self.request.user).first()
+            student=self.request.user.student).first()
         q_text = active_q.q_text  # fails if no object found
         q_dict = parse_question(q_text)
         context_data["operand1"] = q_dict["operand1"]
@@ -39,7 +39,7 @@ class BoolAnswerCreateView(StudentOnlyMixin, generic.CreateView):
         return context_data
 
     def form_valid(self, form):
-        form.instance.student = self.request.user.student   #self.request.user
+        form.instance.student = self.request.user.student
         return super().form_valid(form)
 
     def get_success_url(self):

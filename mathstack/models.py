@@ -20,7 +20,6 @@ class BooleanAnswer(models.Model):
     question = models.CharField(max_length=50)  # example: "10 % 2 == 0"
 
     def save(self, *args, **kwargs):
-        print("LOGGING AN ANSWER OBJECT....")
         # retrieve the current `ActiveQuestion` for this `Student`
         active_q = api_models.ActiveQuestion.objects.filter(student=self.student).first()
         q_text = active_q.q_text
@@ -52,20 +51,22 @@ class IntegerAnswer(models.Model):
     def __str__(self):
         return "{} selected {}".format(self.student.username, self.raw_answer) 
 
+
 @receiver(user_logged_in)
 def populate_active_question(sender, user, request, **kwargs):
+    next_q = get_next_q()
     # check for an existing `ActiveQuestion`
-    q = ActiveQuestion.objects.filter(student__pk=request.user.student.pk).first()
+    q = api_models.ActiveQuestion.objects.filter(student=user.student).first()
     if not q:
-        q = ActiveQuestion.objects.create(
-            student_id=request.user.student.pk, q_text=get_next_q())
+        q = api_models.ActiveQuestion.objects.create(
+            student=user.student, q_text=next_q)
     else:
-        q.q_text=get_next_q()
+        q.q_text=next_q
         q.save()
 
 @receiver(models.signals.post_save, sender=BooleanAnswer)
 def update_active_question(sender, instance, created, **kwargs):
     if created:
-        active_q = ActiveQuestion.objects.filter(student=instance.student).first()
+        active_q = api_models.ActiveQuestion.objects.filter(student=instance.student).first()
         active_q.q_text = get_next_q()
         active_q.save()
