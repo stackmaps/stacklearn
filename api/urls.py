@@ -8,7 +8,7 @@ from programming.urls import GameSolutionViewSet
 class UserSerializer(serializers.ModelSerializer):
 	class Meta:
 			model = User
-			exclude = ('password')
+			fields = ('url', 'username', 'email', 'is_staff')
 
 class UserViewSet(viewsets.ModelViewSet):
 	queryset = User.objects.all()
