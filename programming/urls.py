@@ -1,4 +1,4 @@
-"""stacklearn URL Configuration
+"""programming URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.0/topics/http/urls/
@@ -13,16 +13,24 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf.urls import include
-from django.contrib import admin
 from django.urls import path
-from mathstack import views as mathstack_views
+from django.conf.urls import url
+from programming import views as programming_views
+from .models import GameSolution
+
+class GameSolutionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GameSolution
+        fields = '__all__'
+
+class GameSolutionViewSet(viewsets.ModelViewSet):
+    serializer_class = GameSolutionSerializer
+    permission_classes = (permissions.IsAuthenticated)
+
+    def get_queryset(self):
+        return GameSolution.objects.filter(creator=self.request.user.student).all()
+
 
 urlpatterns = [
-    path('api/', include('api.urls')),
-    path('admin/', admin.site.urls),
-    path('math/div/', mathstack_views.BoolAnswerCreateView.as_view(), name='bool_answer_create'),
-    path('accounts/', include('django.contrib.auth.urls')),
-# the line below is commented out because some if the files it depends on are not yet complete. (specifically programming/views.py which programming/urls.py relies on which this relies on)
-#    path('programming/', include('programming.urls'))
+    path('game/', programming_views.GameSolutionCreateView.asview(), name='programming game')
 ]
