@@ -5,6 +5,8 @@ from django.shortcuts import render
 from .models import StudentStatistic
 from django.views import generic
 from api import models as api_models
+from mathstack.models import IntegerAnswer
+from mathstack.models import BooleanAnswer
 
 
 # Create your views here.
@@ -24,5 +26,13 @@ class UserStatsCreateView(generic.CreateView):
         context_data = super(UserStatsCreateView, self).get_context_data()
         context_data["statset"] = StudentStatistic.objects.filter(student=self.request.user.student).all()
         context_data["user"] = self.request.user
+
+        int_answers = IntegerAnswer.objects.filter(student=self.request.user.student)
+        correct_ints = len(int_answers.filter(was_correct=True).all())
+        incorrect_ints = len(int_answers.filter(was_correct=False).all())
+        context_data["correct_ints"] = correct_ints
+        context_data["incorrect_ints"] = incorrect_ints
+        context_data["percentage"] = (correct_ints / (incorrect_ints + correct_ints)) * 100
+
         # context_data["subjects"] = StudentStatistic.objects.values_list('subject', flat=True).filter(user=self.request.user)
         return context_data
