@@ -1,3 +1,6 @@
+""" /mathstack/views.py
+"""
+
 from django.shortcuts import render
 from .models import StudentStatistic
 from django.views import generic
@@ -7,7 +10,9 @@ from api import models as api_models
 # Create your views here.
 
 class UserStatsCreateView(generic.CreateView):  
-    
+    """ Class-based view to display user statistics.
+    """
+
     model = StudentStatistic
     template_name = "userstats/userstats_display.html"
     fields = ["num_correct"]
