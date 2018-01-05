@@ -20,17 +20,28 @@ class UserStatsCreateView(generic.CreateView):
     model = IntegerAnswer
     template_name = "userstats/userstats_display.html"
     fields = ["was_correct"]
-
+    
     def get_context_data(self, **kwargs):
+        NUM_TO_EVALUATE = 10
         context_data = super(UserStatsCreateView, self).get_context_data()
         context_data["user"] = self.request.user
-
-        int_answers = IntegerAnswer.objects.filter(student=self.request.user.student)
-        correct_ints = len(int_answers.filter(was_correct=True).all())
-        incorrect_ints = len(int_answers.filter(was_correct=False).all())
+        int_answers = IntegerAnswer.objects.filter(student=self.request.user.student).order_by('created_at')
+        num_answers = len(int_answers)
+        if num_answers >= NUM_TO_EVALUATE:
+            int_answers = int_answers[num_answers-NUM_TO_EVALUATE:]
+        correct_ints = 0
+        incorrect_ints = 0
+        for answer in int_answers:
+            if answer.was_correct == True:
+                correct_ints += 1
+            else:
+                incorrect_ints += 1
         context_data["correct_ints"] = correct_ints
         context_data["incorrect_ints"] = incorrect_ints
-        context_data["percentage"] = (correct_ints / (incorrect_ints + correct_ints)) * 100
+        context_data["percentage"] = (correct_ints / (correct_ints+incorrect_ints)) * 100
+        context_data["progress"] = context_data["percentage"] * 1.11111111111
+        
+
 
         # context_data["subjects"] = StudentStatistic.objects.values_list('subject', flat=True).filter(user=self.request.user)
         return context_data
