@@ -14,7 +14,7 @@ class BooleanQuestion(models.Model):
     OP_CHOICES = [(MODULUS, "%")]
     operand1 = models.IntegerField()
     operand2 = models.IntegerField()
-    operator = models.CharField(choices=OP_CHOICES, max_length=2)
+    operator = models.CharField(choices=OP_CHOICES, max_length=20)
     correct_answer = models.BooleanField()
 
     def __str__(self):
