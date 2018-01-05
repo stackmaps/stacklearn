@@ -114,6 +114,10 @@ Then resolve all merge conflicts and update dependencies like this:
     python manage.py migrate
     python manage.py test
 
+Then push all your local changes to your own fork. You should run:
+
+    git push --set-upstream origin my-feature
+
 When your branch is ready (e.g., has comments and tests), submit a Pull Request!
 
 IMPORTANT: WHEN YOUR PR IS ACCEPTED, stop using your branch right away (or delete it altogether).  New features (or enhanced versions of your existing feature) should be created on brand new branches (after pulling in all the fresh changes from `dev`).
