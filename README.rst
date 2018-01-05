@@ -118,6 +118,9 @@ Then push all your local changes to your own fork. You should run:
 
     git push --set-upstream origin my-feature
 
-When your branch is ready (e.g., has comments and tests), submit a Pull Request!
+When your branch is ready (e.g., has comments and tests), submit a Pull Request! To do this, go to GitHub, navigate to your fork (in this case the github extension should be /your-username/stacklearn),
+then click `new pull request`. Then change the base to `dev` and the compare to `my-feature.` Finally, click `Create pull request`
+
+
 
 IMPORTANT: WHEN YOUR PR IS ACCEPTED, stop using your branch right away (or delete it altogether).  New features (or enhanced versions of your existing feature) should be created on brand new branches (after pulling in all the fresh changes from `dev`).
