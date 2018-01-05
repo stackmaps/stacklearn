@@ -1,16 +1,16 @@
 {% extends "base.html" %}
-{% block title %}TEST{% endblock %}
+{% block title %}User Statistics{% endblock %}
 
 {% block content%}
+
 <h2>Displaying User Statistics for {{user.username}}</h2>
-    <br>
-    <br>
-{% for subject in statset %}
-	<h5>{{subject.subject}}</h5>
-    <p>Percentage correct: {{subject.percent_correct}}</p>
-    <br>
-    <br>
-{% endfor %}
+<br>
+<h4> Integer Answers </h4>
+
+<b>Percentage Correct overall: </b> {{percentage}}
+<br>
+<b>Correct Answers: </b> {{correct_ints}}
+<b>Incorrect Answers: </b> {{incorrect_ints}}
 
 
 {%endblock%}
