@@ -39,6 +39,9 @@ class UserStatsCreateView(generic.CreateView):
         context_data["correct_ints"] = correct_ints
         context_data["incorrect_ints"] = incorrect_ints
         context_data["percentage"] = (correct_ints / (NUM_TO_EVALUATE)) * 100
+        context_data["progress"] = context_data["percentage"] * 1.11111111111
+        
+
 
         # context_data["subjects"] = StudentStatistic.objects.values_list('subject', flat=True).filter(user=self.request.user)
         return context_data

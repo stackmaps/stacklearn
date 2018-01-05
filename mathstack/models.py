@@ -106,9 +106,10 @@ class IntegerAnswer(models.Model):
 
 @receiver(user_logged_in)
 def populate_active_question(sender, user, request, **kwargs):
-    if hasattr(user, 'student'):
-        # check for an existing `ActiveQuestion`
-        q = ActiveQuestion.objects.filter(student=user.student).first()
-        if not q:
-            ActiveQuestion.objects.create(
-                student=user.student, question=BooleanQuestion.generate_question())
+    pass
+    # if hasattr(user, 'student'):
+    #     # check for an existing `ActiveQuestion`
+    #     q = ActiveQuestion.objects.filter(student=user.student).first()
+    #     if not q:
+    #         ActiveQuestion.objects.create(
+    #             student=user.student, question=BooleanQuestion.generate_question())
