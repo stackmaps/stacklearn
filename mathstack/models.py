@@ -9,6 +9,19 @@ from mathstack.helpers import compute_answer, get_next_q
 import uuid
 
 
+class BooleanQuestion(models.Model):
+    """ A model for storing YES/NO math questions
+    """
+    OP_CHOICES = [("MODULUS", "%")]
+    operand1 = models.IntegerField()
+    operand2 = models.IntegerField()
+    operator = models.CharField(choices=OP_CHOICES, max_length=2)
+    correct_answer = models.BooleanField()
+
+    def __str__(self):
+        return "{} {} {} == 0".format(operand1, operator, operand2)
+
+
 class BooleanAnswer(models.Model):
     """ A `BooleanAnswer` is a `Student`-created response to a YES/NO question.
     """

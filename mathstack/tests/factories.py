@@ -37,3 +37,14 @@ class ActiveQuestionFactory(factory.DjangoModelFactory):
     student = factory.SubFactory(StudentFactory)
     q_text = "here is a test question for the test suite"
 
+
+class BooleanAnswerFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = mathstack_models.BooleanAnswer
+
+    student = factory.SubFactory(StudentFactory)
+    raw_answer = False
+    right_answer = False
+    was_correct = True
+    question = "here is a test question for the test suite"
+
