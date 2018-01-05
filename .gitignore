@@ -3,6 +3,7 @@ data
 *.pyc
 staticfiles
 .env
+.vscode
 
 # artifacts
 .gitignore~
