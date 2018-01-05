@@ -18,5 +18,5 @@ from django.conf.urls import url
 from programming import views as programming_views
 
 urlpatterns = [
-    path('game/', programming_views.ProgrammingHome.asview(), name='programming game')
+    path('game/', programming_views.GameSolutionCreateView.asview(), name='programming game')
 ]
