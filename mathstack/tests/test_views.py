@@ -6,10 +6,8 @@
 """
 
 from django.shortcuts import reverse
-from django.test import Client, TestCase
 import mathstack.tests.factories as mathstack_factories
-import mathstack.models as mathstack_models
-from mathstack.tests.test_helpers import LoggedInStudentTestCase, LoggedInUserTestCase
+from mathstack.tests.test_helpers import LoggedInStudentTestCase
 
 
 class TestBoolAnswerCreateView(LoggedInStudentTestCase):

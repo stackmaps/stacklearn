@@ -1,7 +1,4 @@
 from django.contrib import admin
-from api.models import (
-	Student, ActiveQuestion
-	)
+from api import models as models
 
-admin.site.register(Student)
-admin.site.register(ActiveQuestion)
+admin.site.register(models.Student)

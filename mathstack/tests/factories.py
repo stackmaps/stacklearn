@@ -1,50 +1,37 @@
 """ factories.py for the MATHSTACK app
 """
+import factory
 
-from api import models as api_models
-from django.contrib.auth import get_user_model
+from api.tests import factories as api_factories
 from mathstack import models as mathstack_models
 
-import datetime
-import factory
-import pytz
 
 PASSWORD = "W0W ultr@ super secure passw0rd!!!"
 
 
-class UserFactory(factory.DjangoModelFactory):
+class BooleanQuestionFactory(factory.DjangoModelFactory):
     class Meta:
-        model = get_user_model()
+        model = mathstack_models.BooleanQuestion
 
-    first_name = "SampleUser"
-    username = factory.Sequence(lambda n: "user_%d" % n)
-    email = factory.Sequence(lambda n: "user_%d@example.com" % n)
-    password = factory.PostGenerationMethodCall("set_password", PASSWORD)
-    last_login = pytz.utc.localize(datetime.datetime(2017, 3, 1))
-
-
-class StudentFactory(factory.DjangoModelFactory):
-    class Meta:
-        model = api_models.Student
-
-    user = factory.SubFactory(UserFactory)  # has a ForeignKey!
+    operand1 = 1000
+    operand2 = 5
+    operator = mathstack_models.BooleanQuestion.MODULUS
 
 
 class ActiveQuestionFactory(factory.DjangoModelFactory):
     class Meta:
-        model = api_models.ActiveQuestion
+        model = mathstack_models.ActiveQuestion
 
-    student = factory.SubFactory(StudentFactory)
-    q_text = "here is a test question for the test suite"
+    question = factory.SubFactory(BooleanQuestionFactory)
+    student = factory.SubFactory(api_factories.StudentFactory)
 
 
 class BooleanAnswerFactory(factory.DjangoModelFactory):
     class Meta:
         model = mathstack_models.BooleanAnswer
 
-    student = factory.SubFactory(StudentFactory)
-    raw_answer = False
-    right_answer = False
+    question = factory.SubFactory(BooleanQuestionFactory)
+    student = factory.SubFactory(api_factories.StudentFactory)
+    raw_answer = True
     was_correct = True
-    question = "here is a test question for the test suite"
 

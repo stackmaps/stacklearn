@@ -3,7 +3,7 @@
 """
 
 from django.test import Client, TestCase
-from mathstack.tests.factories import PASSWORD, StudentFactory, UserFactory
+from api.tests.factories import PASSWORD, StudentFactory, UserFactory
 
 
 class LoggedInUserTestCase(TestCase):  # the base class -- contains no tests
