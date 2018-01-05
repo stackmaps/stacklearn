@@ -6,6 +6,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.dispatch import receiver
 
+# TODO: These models are mostly useless and have been replaced in
+# functionality by the models in the `api` app.  However, these models are still
+# of use; they can be used to create classes which wrap the now generic
+# question/answer models.
 
 class BooleanQuestion(models.Model):
     """ A model for storing YES/NO math questions
