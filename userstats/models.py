@@ -5,7 +5,11 @@ import uuid
 import api.models as api_models
 
 # Create your models here.
-
+"""
+A model that tracks a `student`'s statistics. Subjects can be added into the `SUBJECTS` tuple. 
+For each `subject` a `student` has studied they will have a different set of data.
+`percent_correct` is a function to find the percent correct a `student` has gotten for any `subject. It is used in userstats_display.html
+"""
 class StudentStatistic(models.Model):
     MATH = "Mathematics"
     PROGRAMMING = "Programming"
