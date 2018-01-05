@@ -1,14 +1,9 @@
 """ /mathstack/views.py
 """
 from braces.views import LoginRequiredMixin
-from django.shortcuts import render, reverse
+from django.shortcuts import reverse, Http404
 from django.views import generic
-from mathstack.helpers import (
-    compute_answer, get_divisor, get_next_q, parse_question
-    )
-from api import models as api_models
 from mathstack import models as mathstack_models
-import random
 
 
 class StudentOnlyMixin(LoginRequiredMixin):
@@ -26,21 +21,20 @@ class BoolAnswerCreateView(StudentOnlyMixin, generic.CreateView):
     model = mathstack_models.BooleanAnswer
     fields = ["raw_answer"]
     template_name = "mathstack/bool_answer_create.html"
-    #context_object_name
 
     def get_context_data(self, **kwargs):
         context_data = super(BoolAnswerCreateView, self).get_context_data(**kwargs)
-        print("THE KEYS ARE:")
-        print(context_data.keys())
         # retrieve the question from `ActiveQuestion` object
-        active_q = api_models.ActiveQuestion.objects.filter(
-            student=self.request.user).first()
-        q_text = active_q.q_text  # fails if no object found
-        q_dict = parse_question(q_text)
-        context_data["operand1"] = q_dict["operand1"]
-        context_data["divisor"] = q_dict["divisor"]
+        active_q = mathstack_models.ActiveQuestion.objects.filter(
+            student=self.request.user.student).first()
+        context_data["operand1"] = active_q.question.operand1
+        context_data["divisor"] = active_q.question.operand2
         return context_data
 
+    def form_valid(self, form):
+        form.instance.student = self.request.user.student
+        return super().form_valid(form)
 
-
+    def get_success_url(self):
+        return reverse('bool_answer_create')
 

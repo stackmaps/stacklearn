@@ -1,7 +1,8 @@
 from django.contrib import admin
-from mathstack.models import (
-	BooleanAnswer, IntegerAnswer
-	)
+from mathstack import models
 
-admin.site.register(BooleanAnswer)
-admin.site.register(IntegerAnswer)
+
+admin.site.register(models.BooleanQuestion)
+admin.site.register(models.ActiveQuestion)
+admin.site.register(models.BooleanAnswer)
+admin.site.register(models.IntegerAnswer)

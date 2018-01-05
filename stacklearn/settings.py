@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap4',
     'rest_framework',
+    'rest_framework.authtoken',
     'api',
     'mathstack',
     'programming'
@@ -56,6 +57,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'stacklearn.urls'
+
+LOGIN_REDIRECT_URL = '/math/div/'
 
 TEMPLATES = [
     {

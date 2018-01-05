@@ -3,7 +3,9 @@ from django.contrib.auth.models import User
 from django.urls import path
 from rest_framework import routers, serializers, viewsets
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+from programming.urls import GameSolutionViewSet
+
+class UserSerializer(serializers.ModelSerializer):
 	class Meta:
 			model = User
 			fields = ('url', 'username', 'email', 'is_staff')
@@ -12,9 +14,18 @@ class UserViewSet(viewsets.ModelViewSet):
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
 
-router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
+	# overwrite the get_object method so that `@me` returns the currently
+	# logged in user.
+	def get_object(self):
+		pk = self.kwargs.get('pk')
 
-urlpatterns = [
-	path('', include(router.urls))
-]
+		if pk == "@me":
+			return self.request.user
+
+		return super(UserViewSet, self).get_object()
+
+router = routers.DefaultRouter()
+router.register('users', UserViewSet)
+router.register('programming/solutions', GameSolutionViewSet)
+
+urlpatterns = router.urls
