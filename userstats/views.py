@@ -10,7 +10,10 @@ from api import models as api_models
 # Create your views here.
 
 class UserStatsCreateView(generic.CreateView):  
-    """ Class-based view to display user statistics.
+    """ 
+    Class-based view to display user statistics.
+    Has `context_data["statset"]` as the set of all data for all subjects the current student has studied.
+    Has `context_data["user"]` as the current logged in user.
     """
 
     model = StudentStatistic
