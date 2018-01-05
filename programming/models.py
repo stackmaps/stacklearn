@@ -1,6 +1,7 @@
 from django.db import models
 from api import models as api_models
 from .helpers import get_new_puzzle
+from django.dispatch import receiver
 
 #TODO Add __str__ functions for each model
 
@@ -24,9 +25,10 @@ class GameSolution (models.Model):
     puzzle = models.ForeignKey(GamePuzzle, on_delete=models.CASCADE)
     def save(self, *args, **kwargs):
         """Besides the regular save(), also runs logic for 'checking solution_string' to evaluate 'correct'
-        Also,
-        """
+        Also, compares num_of_steps to the least_steps attr of the GamePuzzle """
+        
         active_puzzle = models.ActivePuzzle.objects.filter(student=self.student).first()
+        self.puzzle = active_puzzle.id #stores id of current puzzle
         print("Saving")
         #TODO complete condition
         if True: # if logic evals to True 'correct' should be True (its default is False)
@@ -60,8 +62,8 @@ class ActivePuzzle(models.Model):
 @receiver(models.signals.post_save, sender=GameSolution)
 def update_puzzle(sender,instance, created,**kwargs):
    """Fetches and Updates ActivePuzzle Object for a Student with a new GamePuzzle"""
-    if created:
-        print("updating puzzle please wait")
-        active_puzzle = models.ActivePuzzle.objects.filter(student=self.student).first()
-        active_puzzle.puzzle = get_new_puzzle()
-        active_puzzle.save(force_update=True)
+   if created:
+       print("updating puzzle please wait")
+       active_puzzle = models.ActivePuzzle.objects.filter(student=self.student).first()
+       active_puzzle.puzzle = get_new_puzzle()
+       active_puzzle.save(force_update=True)
