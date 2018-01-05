@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap4',
     'rest_framework',
+    'rest_framework.authtoken',
     'api',
     'mathstack'
 ]

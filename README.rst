@@ -60,3 +60,34 @@ Run the server::
 View the data models from any browser::
 
 ..    http://127.0.0.1:8000/admin/
+
+Make changes and run tests
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To run the test suite::
+
+    (oenv) $ python manage.py test --keepdb
+
+Add your own feature and submit a Pull Request
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Keep your commit history clean and merge process simple by following these steps before starting on any new feature::
+
+Once time only, add this repo as a remote to your fork, e.g.::
+
+    git remote add upstream git@github.com:stackmaps/stacklearn.git
+
+Anytime a PR is merged or changes are pushed, you should run::
+
+    git checkout dev
+    git pull upstream dev
+
+in order to make sure you are working with an up-to-date copy of the `dev` branch.
+
+Once you have the most recent `dev` code, create a new branch (off of `dev`) for your new feature.  Pick an issue (or create a new one) which your new feature will address.
+
+Proceed with writing code.  Commit frequently!  Focus on writing very clear, concise commit statements and plentiful comments.  If you have poor comments or zero tests, your PR will not be merged.
+
+When your branch is ready (e.g., has comments and tests), submit a Pull Request! 
+
+IMPORTANT: WHEN YOUR PR IS ACCEPTED, stop using your branch right away (or delete it altogether).  New features (or enhanced versions of your existing feature) should be created on brand new branches (after pulling in all the fresh changes from `dev`).
