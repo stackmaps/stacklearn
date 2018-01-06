@@ -2,7 +2,6 @@ import random
 
 from api import models as api_models
 from django.contrib.auth.signals import user_logged_in
-from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.dispatch import receiver
 
@@ -10,6 +9,10 @@ from django.dispatch import receiver
 class BooleanQuestion(models.Model):
     """ A model for storing YES/NO math questions
     """
+    DIVISORS = [2, 3, 4, 5, 6, 9]
+    LOWER = 10
+    UPPER = 5000
+
     MODULUS = "MODULUS"
     OP_CHOICES = [(MODULUS, "%")]
     operand1 = models.IntegerField()
@@ -18,7 +21,7 @@ class BooleanQuestion(models.Model):
     correct_answer = models.BooleanField()
 
     def __str__(self):
-        return "{} {} {} == 0".format(self.operand1, self.operator, self.operand2)
+        return "{} {} {} == 0".format(self.operand1, self.get_operator_display(), self.operand2)
 
     def save(self, *args, **kwargs):
         self.correct_answer = self.compute_answer()
@@ -37,17 +40,14 @@ class BooleanQuestion(models.Model):
 
     @staticmethod
     def get_divisor():
-        DIVISORS = [2, 3, 4, 5, 6, 9]
-        return random.choice(DIVISORS)
+        return random.choice(BooleanQuestion.DIVISORS)
 
     @staticmethod
     def generate_question():
         """ Method to generate a random math question and update the ActiveQuestion accordingly.
         Presently generates divisibility questions only.
         """
-        LOWER = 10
-        UPPER = 5000
-        op1 = random.randint(LOWER, UPPER)
+        op1 = random.randint(BooleanQuestion.LOWER, BooleanQuestion.UPPER)
         op2 = BooleanQuestion.get_divisor()
         q = BooleanQuestion.objects.create(operand1=op1, operand2=op2, operator=BooleanQuestion.MODULUS)
         return q
@@ -106,10 +106,9 @@ class IntegerAnswer(models.Model):
 
 @receiver(user_logged_in)
 def populate_active_question(sender, user, request, **kwargs):
-    pass
-    # if hasattr(user, 'student'):
-    #     # check for an existing `ActiveQuestion`
-    #     q = ActiveQuestion.objects.filter(student=user.student).first()
-    #     if not q:
-    #         ActiveQuestion.objects.create(
-    #             student=user.student, question=BooleanQuestion.generate_question())
+    if hasattr(user, 'student'):
+        # check for an existing `ActiveQuestion`
+        q = ActiveQuestion.objects.filter(student=user.student).first()
+        if not q:
+            ActiveQuestion.objects.create(
+                student=user.student, question=BooleanQuestion.generate_question())

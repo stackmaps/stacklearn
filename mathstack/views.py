@@ -10,8 +10,8 @@ class StudentOnlyMixin(LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = super(StudentOnlyMixin, self).get_context_data(**kwargs)
 
-        #if not hasattr(self.request.user, "student") or self.request.user.student is None:
-         #   raise Http404()
+        if not hasattr(self.request.user, "student") or self.request.user.student is None:
+           raise Http404()
         return context
 
 
