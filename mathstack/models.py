@@ -2,7 +2,6 @@ import random
 
 from api import models as api_models
 from django.contrib.auth.signals import user_logged_in
-from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.dispatch import receiver
 
@@ -106,10 +105,9 @@ class IntegerAnswer(models.Model):
 
 @receiver(user_logged_in)
 def populate_active_question(sender, user, request, **kwargs):
-    pass
-    # if hasattr(user, 'student'):
-    #     # check for an existing `ActiveQuestion`
-    #     q = ActiveQuestion.objects.filter(student=user.student).first()
-    #     if not q:
-    #         ActiveQuestion.objects.create(
-    #             student=user.student, question=BooleanQuestion.generate_question())
+    if hasattr(user, 'student'):
+        # check for an existing `ActiveQuestion`
+        q = ActiveQuestion.objects.filter(student=user.student).first()
+        if not q:
+            ActiveQuestion.objects.create(
+                student=user.student, question=BooleanQuestion.generate_question())

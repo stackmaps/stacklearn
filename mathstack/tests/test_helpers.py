@@ -18,6 +18,6 @@ class LoggedInStudentTestCase(TestCase):  # the base class -- contains no tests
 
     def setUp(self):
         self.user = UserFactory()
-        self.teacher = StudentFactory(user=self.user)
+        self.student = StudentFactory(user=self.user)
         self.client = Client()
         self.client.login(username=self.user.username, password=PASSWORD)
